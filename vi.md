@@ -164,7 +164,7 @@ Cái này có thể gọi là chỉ mục "hợp chất" hoặc "hỗn hợp" t�
  
  1\. Tìm hiểu về BTree để chỉ mục có được chính xác hàng chỉ mục cho Johnson + Andrew; get seq = (17)
  
- 2\. Reach into the data using seq = (17) to get the row for Andrew Johnson. 
+ 2\. Tiếp cận dữ liệu bằng cách sử dụng seq = (17) để lấy hàng cho Andrew Johnson 
  
  3\. Gửi lại các câu trả lời (1865-1869). Thế này tốt hơn. Trong thực tế thì đây có thể là cách "tốt nhất".
     
