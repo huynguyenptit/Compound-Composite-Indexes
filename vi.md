@@ -162,7 +162,7 @@ EXPLAIN không cung cấp thông tin chi tiết về số lượng hàng đượ
 
 Cái này có thể gọi là chỉ mục "hợp chất" hoặc "hỗn hợp" từ khi nó có nhiều hơn một cột.
  
- 1\. Drill down the BTree for the index to get to exactly the index row for Johnson+Andrew; get seq = (17). 
+ 1\. Tìm hiểu về BTree để chỉ mục có được chính xác hàng chỉ mục cho Johnson + Andrew; get seq = (17)
  
  2\. Reach into the data using seq = (17) to get the row for Andrew Johnson. 
  
