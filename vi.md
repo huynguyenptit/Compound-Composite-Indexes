@@ -156,8 +156,7 @@ Tốt thôi, nếu bạn thực sự thông minh và quyết định MySQL có �
              rows: 1
             Extra: Using intersect(first_name,last_name); Using where
     
-
-The EXPLAIN fails to give the gory details of how many rows collected from each index, etc.
+EXPLAIN không cung cấp thông tin chi tiết về số lượng hàng được thu thập từ mỗi chỉ mục, v.v.
 
 ## INDEX(last_name, first_name)
 
