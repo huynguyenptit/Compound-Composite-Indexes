@@ -2,11 +2,11 @@
 
 # Các INDEX tổng hợp (Composite) - Cơ sở kiến thức về MariaDB
 
-## Một bài tập nhỏ trong "Các INDEX tổng hợp" ("composite indexes")
+## Một bài tập nhỏ về "Các INDEX tổng hợp" ("composite indexes")
 
-Tài liệu này bắt đầu từ những thứ không đáng kể và có lẽ là buồn tẻ, nhưng khi xây dựng chúng lên sẽ có nhiều thông tin rất thú vị, có lẽ nhiều điều bạn đã không nhận ra về cách đánh dấu index của MariaDB vs MySQL.
+Tài liệu này bắt đầu từ những thứ không đáng kể và có lẽ là buồn tẻ, nhưng khi xây dựng chúng lên sẽ có nhiều thông tin rất thú vị, có lẽ nhiều điều bạn đã không nhận ra về cách đánh index của MariaDB vs MySQL.
 
-Điều này cũng giải thích [Giải thích][1] (ở một mức độ nào đó)
+Điều này cũng giải thích trong [Giải thích][1] (ở một mức độ nào đó)
 
 (Hầu hết những điều này đều áp dụng cho các cơ sở dữ liệu non-MySQL).
 
@@ -42,7 +42,6 @@ INDEX nào sẽ là tối ưu nhất cho câu hỏi này? Cụ thể hơn, đi�
     
 
 Một vài chỉ mục để thử...
-Some INDEXes to try...
 
 * Không có INDEX nào
 * INDEX(first_name), INDEX(last_name) (2 INDEX song song) 
@@ -90,7 +89,7 @@ Tôi chỉ giả sử một chút ở đây. Tôi có một khóa chính trong `
 
 ## Triển khai chi tiết
 
-Đầu tiên, hãy mô tả InnoDB dự trữ và sử dụng index như thế nào.
+Đầu tiên, hãy mô tả InnoDB lưu trữ và sử dụng index như thế nào.
 
 * Dữ liệu và khóa chính được "nhóm" lại vs nhau trong BTree
 * Tra cứu BTree rất nhanh và hiệu quả. Đối với một bản có 1 triệu bản ghi có thể được chia thành 3 mức độ của BTree, và 2 cấp cao nhất có thể được cache.
@@ -132,13 +131,13 @@ MySQL hiếm khi sử dụng nhiều hơn 1 index trong một thời điểm và
 
 ## "Hợp nhất các chỉ mục"
 
-Tốt thôi, nếu bạn thực sự thông minh và quyết định MySQL có đủ thông minh để sử dụng cùng 1 lúc 2 tên chỉ mục để lấy câu trả lời. Cái này gọi là "giao điểm".
+Tốt thôi, nếu bạn thực sự thông minh và quyết định được MySQL có đủ thông minh để sử dụng cùng 1 lúc 2 tên chỉ mục để lấy câu trả lời. Cái này gọi là "giao điểm".
  
  1\. Sử dụng INDEX(last_name), tìm 2 chỉ mục có mục với last_name = 'Johnson'; lấy (7, 17) 
  
  2\. Sử dụng INDEX(first_name), tìm 2 chỉ mục có mục với first_name = 'Andrew'; lấy (17, 36) 
  
- 3\. "And" (Hợp nhất) hai danh sách lại với nhau là (7,17) và (17,36) = (17) 
+ 3\. Phép "And" (Hợp nhất) hai danh sách lại với nhau là (7,17) và (17,36) = (17) 
  
  4\.Tiếp cận dữ liệu bằng cách sử dụng seq = (17) để lấy các row cho Andrew Johnson. 
  
