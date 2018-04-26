@@ -4,7 +4,7 @@
 
 ## Một bài tập nhỏ trong "Các INDEX tổng hợp" ("composite indexes")
 
-Tài liệu này bắt đầu từ những thứ không đáng kể và có lẽ là buồn tẻ, nhưng khi xây dựng chúng lên sẽ có nhiều thông tin rất thú vị, có lẽ nhiều điều bạn đã không nhận ra về cách đánh dấu index của MariaDB vs MySQL.
+Tài liệu này bắt đầu từ những thứ tầm thường và có lẽ là nhàm chán, nhưng khi xây dựng chúng lên sẽ có nhiều thông tin rất thú vị, có lẽ nhiều điều bạn đã không nhận ra về cách đánh dấu index của MariaDB vs MySQL hoạt động thế nào.
 
 Điều này cũng giải thích [Giải thích][1] (ở một mức độ nào đó)
 
@@ -42,7 +42,6 @@ INDEX nào sẽ là tối ưu nhất cho câu hỏi này? Cụ thể hơn, đi�
     
 
 Một vài chỉ mục để thử...
-Some INDEXes to try...
 
 * Không có INDEX nào
 * INDEX(first_name), INDEX(last_name) (2 INDEX song song) 
@@ -51,7 +50,7 @@ Some INDEXes to try...
 * INDEX(last_name, first_name, term) (một index "bao phủ") 
 * Các biến thể
 
-## No indexes
+## Không chỉ mục nào cả
 
 Tôi chỉ giả sử một chút ở đây. Tôi có một khóa chính trong `seq`, nhưng lại không có lợi ích gì trong những truy vấn mà chúng ta đang nghiên cứu.
 
@@ -96,7 +95,7 @@ Tôi chỉ giả sử một chút ở đây. Tôi có một khóa chính trong `
 * Tra cứu BTree rất nhanh và hiệu quả. Đối với một bản có 1 triệu bản ghi có thể được chia thành 3 mức độ của BTree, và 2 cấp cao nhất có thể được cache.
 * Mỗi index thứ 2 là một BTree khác, với khóa chính ở lá.
 * Tìm nạp các mục "liên tiếp" (theo index) từ một BTree rất hiệu quả bở vì chúng được lưu liên tiếp.
-* Để đơn giản nó đi, chúng ta có thể đếm từng tra cứu BTree dưới dạng 1 đơn vị công việc, và loại bỏ các lượt quét chỉ mục liên tiếp. Điều này sấp xỉ số lần truy cập vào ổ đĩa cho một bảng lớn trong một hệ thống lớn.
+* Để đơn giản nó đi, chúng ta có thể đếm từng tra cứu BTree dưới dạng 1 đơn vị công việc, và loại bỏ các lượt quét chỉ mục liên tiếp. Điều này sấp xỉ số lần truy cập vào ổ đĩa cho một bảng lớn trong một hệ thống đang hoạt động.
 
 Đối với MyISAM, khóa chính không được lưu cùng dữ liệu, vì vậy hãy nghĩ rằng nó là một khóa thứ cập (Quá đơn giản).
 
@@ -162,7 +161,7 @@ EXPLAIN không cung cấp thông tin chi tiết về số lượng hàng đượ
 
 Cái này có thể gọi là chỉ mục "hợp chất" hoặc "hỗn hợp" từ khi nó có nhiều hơn một cột.
  
- 1\. Tìm hiểu về BTree để chỉ mục có được chính xác hàng chỉ mục cho Johnson + Andrew; get seq = (17)
+ 1\. Tìm hiểu về BTree để chỉ mục có được chính xác hàng chỉ mục cho Johnson + Andrew; đc seq = (17)
  
  2\. Tiếp cận dữ liệu bằng cách sử dụng seq = (17) để lấy hàng cho Andrew Johnson 
  
@@ -187,9 +186,9 @@ Cái này có thể gọi là chỉ mục "hợp chất" hoặc "hỗn hợp" t�
 
 ## "Bao đóng": INDEX(last_name, first_name, term)
 
-Ngạc nhiên chưa! Chúng ta hoàn toàn có thể làm nó tốt hơn 1 chút. Một chỉ mục "bao đóng" là một trong tất cả các trường của mệnh đề SELECT có thể tìm thấy được. Nó được thêm vào mà không cần tiếp cận các dữ liệu để hoàn thành nhiệm vụ.
+Ngạc nhiên chưa! Chúng ta hoàn toàn có thể làm nó tốt hơn 1 chút. Một chỉ mục "bao đóng" là một trong tất cả các trường của mệnh đề SELECT có thể tìm thấy được. Nó có 1 điểm cộng thêm là không cần tiếp cận các dữ liệu để hoàn thành nhiệm vụ.
  
- 1\. Đào sâu xuống dưới của BTree để xác định các dòng chỉ mục 1 cách chính xác cho Johnson+Andrew; lấy seq = (17). 
+ 1\. Tìm kiếm chỉ mục trong BTree để xác định các dòng chỉ mục 1 cách chính xác cho Johnson+Andrew; lấy seq = (17). 
  
  2\. Gửi lại câu trả lời (1865-1869). Cái "dữ liệu" BTree không được đụng vào; đây là một trong những cải tiến so với "hợp nhất".
     
